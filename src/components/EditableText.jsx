@@ -1,24 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Input } from "./ui/input";
+import { useEditableText } from "../hooks/useEditableText";
 
 export const EditableText = ({ text, onSave, onCancel }) => {
-  const [value, setValue] = useState(text);
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      onSave(value);
-    } else if (e.key === "Escape") {
-      onCancel();
-    }
-  };
-
-  const handleBlur = () => {
-    if (value !== text) {
-      onSave(value);
-    } else {
-      onCancel();
-    }
-  };
+  const { value, setValue, handleKeyDown, handleBlur } = useEditableText(
+    text,
+    onSave
+  );
 
   return (
     <Input

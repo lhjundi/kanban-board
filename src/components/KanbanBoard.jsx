@@ -1,31 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { COLUMNS } from "../config/constants";
 import { useKanbanTasks } from "../hooks/useKanbanTasks";
 import { Column } from "./Column";
 import { AddTaskForm } from "./AddTaskForm";
 
 const KanbanBoard = () => {
-  const {
-    tasks,
-    newTaskText,
-    setNewTaskText,
-    addTask,
-    editTask,
-    moveTask,
-    deleteTask,
-  } = useKanbanTasks();
-
-  const [showAlert, setShowAlert] = useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!newTaskText.trim()) {
-      setShowAlert(true);
-      setTimeout(() => setShowAlert(false), 3000);
-      return;
-    }
-    addTask(newTaskText);
-  };
+  const { tasks, addTask, editTask, moveTask, deleteTask } = useKanbanTasks();
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
@@ -33,12 +13,7 @@ const KanbanBoard = () => {
         Kanban TodoList
       </h1>
 
-      <AddTaskForm
-        newTaskText={newTaskText}
-        setNewTaskText={setNewTaskText}
-        onSubmit={handleSubmit}
-        showAlert={showAlert}
-      />
+      <AddTaskForm onAddTask={addTask} />
 
       <div className="flex gap-4">
         {COLUMNS.map((column) => (

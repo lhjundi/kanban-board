@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 import { INITIAL_TASKS, COLUMNS } from "../config/constants";
 
 export const useKanbanTasks = () => {
   const [tasks, setTasks] = useLocalStorage("kanbanTasks", INITIAL_TASKS);
-  const [newTaskText, setNewTaskText] = useState("");
 
   const addTask = (text) => {
     if (!text.trim()) return;
@@ -12,7 +10,6 @@ export const useKanbanTasks = () => {
       ...tasks,
       todo: [...tasks.todo, { id: Date.now().toString(), text: text.trim() }],
     });
-    setNewTaskText("");
   };
 
   const editTask = (taskId, status, newText) => {
@@ -49,8 +46,6 @@ export const useKanbanTasks = () => {
 
   return {
     tasks,
-    newTaskText,
-    setNewTaskText,
     addTask,
     editTask,
     moveTask,

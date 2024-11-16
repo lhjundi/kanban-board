@@ -1,24 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card, CardContent } from "./ui/card";
 import { EditableText } from "./EditableText";
 import { MoveLeftButton } from "./MoveLeftButton";
 import { MoveRightButton } from "./MoveRightButton";
 import { DeleteButton } from "./DeleteButton";
 import { TaskAlert } from "./TaskAlert";
+import { useTask } from "../hooks/useTask";
 
 export const Task = ({ task, status, onMove, onDelete, onEdit }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-
-  const handleEdit = (newText) => {
-    if (!newText.trim()) {
-      setShowAlert(true);
-      setTimeout(() => setShowAlert(false), 3000);
-      return;
-    }
-    onEdit(task.id, status, newText);
-    setIsEditing(false);
-  };
+  const { isEditing, showAlert, handleEdit, startEditing, stopEditing } =
+    useTask((newText) => onEdit(task.id, status, newText));
 
   const taskTextClasses = `
     flex-1 cursor-pointer
@@ -37,13 +28,10 @@ export const Task = ({ task, status, onMove, onDelete, onEdit }) => {
             <EditableText
               text={task.text}
               onSave={handleEdit}
-              onCancel={() => setIsEditing(false)}
+              onCancel={stopEditing}
             />
           ) : (
-            <span
-              className={taskTextClasses}
-              onClick={() => setIsEditing(true)}
-            >
+            <span className={taskTextClasses} onClick={startEditing}>
               {task.text}
             </span>
           )}
