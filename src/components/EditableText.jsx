@@ -6,7 +6,8 @@ export const EditableText = ({ text, onSave, onCancel, onInvalid }) => {
   const { value, setValue, handleKeyDown, handleBlur } = useEditableText(
     text,
     onSave,
-    onInvalid
+    onInvalid,
+    onCancel
   );
 
   return (

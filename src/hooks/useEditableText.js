@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export const useEditableText = (initialText, onSave, onInvalid) => {
+export const useEditableText = (initialText, onSave, onInvalid, onCancel) => {
   const [value, setValue] = useState(initialText);
 
   useEffect(() => {
@@ -11,19 +11,19 @@ export const useEditableText = (initialText, onSave, onInvalid) => {
     if (e.key === "Enter") {
       e.preventDefault();
       if (!value.trim()) {
-        onInvalid(); // Chama callback de erro
+        onInvalid();
         return;
       }
       onSave(value);
     } else if (e.key === "Escape") {
       setValue(initialText);
-      onSave(initialText);
+      onCancel();
     }
   };
 
   const handleBlur = () => {
     if (!value.trim()) {
-      onInvalid(); // Chama callback de erro
+      onInvalid();
       setValue(initialText);
       return;
     }
