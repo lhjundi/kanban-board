@@ -2,10 +2,11 @@ import React from "react";
 import { Input } from "./ui/input";
 import { useEditableText } from "../hooks/useEditableText";
 
-export const EditableText = ({ text, onSave, onCancel }) => {
+export const EditableText = ({ text, onSave, onCancel, onInvalid }) => {
   const { value, setValue, handleKeyDown, handleBlur } = useEditableText(
     text,
-    onSave
+    onSave,
+    onInvalid
   );
 
   return (

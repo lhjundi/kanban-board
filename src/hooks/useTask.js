@@ -4,13 +4,17 @@ export const useTask = (onEdit) => {
   const [isEditing, setIsEditing] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  const handleEdit = (taskId, status, newText) => {
+  const handleInvalidEdit = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000);
+  };
+
+  const handleEdit = (newText) => {
     if (!newText.trim()) {
-      setShowAlert(true);
-      setTimeout(() => setShowAlert(false), 3000);
+      handleInvalidEdit();
       return;
     }
-    onEdit(taskId, status, newText);
+    onEdit(newText.trim());
     setIsEditing(false);
   };
 
@@ -23,5 +27,6 @@ export const useTask = (onEdit) => {
     handleEdit,
     startEditing,
     stopEditing,
+    handleInvalidEdit,
   };
 };

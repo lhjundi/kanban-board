@@ -8,8 +8,16 @@ import { TaskAlert } from "./TaskAlert";
 import { useTask } from "../hooks/useTask";
 
 export const Task = ({ task, status, onMove, onDelete, onEdit }) => {
-  const { isEditing, showAlert, handleEdit, startEditing, stopEditing } =
-    useTask((newText) => onEdit(task.id, status, newText));
+  const {
+    isEditing,
+    showAlert,
+    handleEdit,
+    startEditing,
+    stopEditing,
+    handleInvalidEdit,
+  } = useTask((newText) => {
+    onEdit(task.id, status, newText);
+  });
 
   const taskTextClasses = `
     flex-1 cursor-pointer
@@ -27,8 +35,9 @@ export const Task = ({ task, status, onMove, onDelete, onEdit }) => {
           {isEditing ? (
             <EditableText
               text={task.text}
-              onSave={handleEdit}
+              onSave={(newText) => handleEdit(newText)}
               onCancel={stopEditing}
+              onInvalid={handleInvalidEdit}
             />
           ) : (
             <span className={taskTextClasses} onClick={startEditing}>
