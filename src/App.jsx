@@ -1,10 +1,10 @@
-import "./App.css";
-import { Button } from "./components/ui/button";
+import KanbanBoard from "./components/KanbanBoard";
+
 function App() {
   return (
-    <>
-      <Button>Hello</Button>
-    </>
+    <div>
+      <KanbanBoard />
+    </div>
   );
 }
 
