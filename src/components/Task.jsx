@@ -1,3 +1,4 @@
+// src/components/Task.jsx
 import React, { useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import { EditableText } from "./EditableText";
@@ -13,6 +14,15 @@ export const Task = ({ task, status, onMove, onDelete, onEdit }) => {
     setIsEditing(false);
   };
 
+  const taskTextClasses = `
+    flex-1 cursor-pointer
+    ${
+      status === "done"
+        ? "line-through text-slate-500 italic"
+        : "hover:text-blue-600"
+    }
+  `;
+
   return (
     <Card className="bg-white">
       <CardContent className="p-3 flex items-center gap-2">
@@ -23,10 +33,7 @@ export const Task = ({ task, status, onMove, onDelete, onEdit }) => {
             onCancel={() => setIsEditing(false)}
           />
         ) : (
-          <span
-            className="flex-1 cursor-pointer hover:text-blue-600"
-            onClick={() => setIsEditing(true)}
-          >
+          <span className={taskTextClasses} onClick={() => setIsEditing(true)}>
             {task.text}
           </span>
         )}
