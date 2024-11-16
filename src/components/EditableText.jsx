@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
+import { Input } from "./ui/input";
 
 export const EditableText = ({ text, onSave, onCancel }) => {
   const [value, setValue] = useState(text);
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && value.trim()) {
+    if (e.key === "Enter") {
       onSave(value);
     } else if (e.key === "Escape") {
       onCancel();
@@ -13,7 +13,7 @@ export const EditableText = ({ text, onSave, onCancel }) => {
   };
 
   const handleBlur = () => {
-    if (value.trim() && value !== text) {
+    if (value !== text) {
       onSave(value);
     } else {
       onCancel();

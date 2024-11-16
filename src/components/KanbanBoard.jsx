@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { COLUMNS } from "../config/constants";
 import { useKanbanTasks } from "../hooks/useKanbanTasks";
 import { Column } from "./Column";
@@ -15,8 +15,15 @@ const KanbanBoard = () => {
     deleteTask,
   } = useKanbanTasks();
 
+  const [showAlert, setShowAlert] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!newTaskText.trim()) {
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000);
+      return;
+    }
     addTask(newTaskText);
   };
 
@@ -30,6 +37,7 @@ const KanbanBoard = () => {
         newTaskText={newTaskText}
         setNewTaskText={setNewTaskText}
         onSubmit={handleSubmit}
+        showAlert={showAlert}
       />
 
       <div className="flex gap-4">
