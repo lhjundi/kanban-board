@@ -4,6 +4,8 @@ import { useKanbanTasks } from "../hooks/useKanbanTasks";
 import { Column } from "./Column";
 import { AddTaskForm } from "./AddTaskForm";
 import { Alert } from "./ui/alert";
+import { TitleKanban } from "./TitleKanban";
+import { TitleMyTasks } from "./TitleMyTasks";
 
 const KanbanBoard = () => {
   const { tasks, loading, error, addTask, editTask, moveTask, deleteTask } =
@@ -11,12 +13,7 @@ const KanbanBoard = () => {
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold">Kanban TodoList</h1>
-        {loading && (
-          <span className="text-sm text-blue-500">Atualizando...</span>
-        )}
-      </div>
+      <TitleKanban />
 
       {error && (
         <Alert variant="destructive" className="mb-4">
@@ -25,6 +22,8 @@ const KanbanBoard = () => {
       )}
 
       <AddTaskForm onAddTask={addTask} disabled={loading} />
+
+      <TitleMyTasks />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {COLUMNS.map((column) => (
