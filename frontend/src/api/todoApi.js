@@ -1,5 +1,4 @@
 import axios from "axios";
-import { errorHandler } from "@/utils/errorHandler";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
