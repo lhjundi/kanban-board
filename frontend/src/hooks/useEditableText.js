@@ -30,7 +30,7 @@ export const useEditableText = (initialText, onSave, onInvalid, onCancel) => {
     if (value !== initialText) {
       onSave(value);
     } else {
-      setValue(initialText);
+      onCancel();
     }
   };
 

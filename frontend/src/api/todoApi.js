@@ -1,4 +1,5 @@
 import axios from "axios";
+import { errorHandler } from "@/utils/errorHandler";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -7,15 +8,17 @@ const api = axios.create({
   },
 });
 
-// Log interceptors
+// Log interceptors, tratar erros
 api.interceptors.response.use(
-  (response) => {
-    console.log("API Response:", response.data);
-    return response;
-  },
-  (error) => {
-    console.error("API Error:", error.response?.data || error.message);
-    throw error;
+  response => response,
+  error => {
+    const errorMessage = errorHandler.handle(error);
+    console.error('API Error:', {
+      url: error.config?.url,
+      method: error.config?.method,
+      message: errorMessage
+    });
+    throw new Error(errorMessage);
   }
 );
 

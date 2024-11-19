@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { todoApi } from "../api/todoApi";
+import { sortTasks } from "../utils/sortTasks";
 
 export function useKanbanTasks() {
   const [tasks, setTasks] = useState({
@@ -10,61 +11,16 @@ export function useKanbanTasks() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Função auxiliar para extrair números de um texto
-  const extractNumber = (text) => {
-    const match = text.match(/\d+/);
-    return match ? parseInt(match[0]) : null;
-  };
-
-  // Função de ordenação
-  const sortTasks = (tasks) => {
-    return [...tasks].sort((a, b) => {
-      const textA = a.text.toLowerCase();
-      const textB = b.text.toLowerCase();
-
-      const numA = extractNumber(textA);
-      const numB = extractNumber(textB);
-
-      // Se ambos têm números, compara numericamente primeiro
-      if (numA !== null && numB !== null) {
-        if (numA !== numB) {
-          return numA - numB;
-        }
-      }
-      // Se apenas um tem número ou se os números são iguais
-      return textA.localeCompare(textB, "pt-BR");
-    });
-  };
-
   const fetchTasks = async () => {
     try {
       setLoading(true);
       const data = await todoApi.getAll();
-      console.log("Raw data from API:", data);
 
-      // Processar e ordenar os dados
+      // Processar e ordenar os as tarefas
       const processedData = {
-        todo: sortTasks(
-          (data.todo || []).map((task) => ({
-            ...task,
-            id: task._id || task.id,
-            _id: task._id || task.id,
-          }))
-        ),
-        doing: sortTasks(
-          (data.doing || []).map((task) => ({
-            ...task,
-            id: task._id || task.id,
-            _id: task._id || task.id,
-          }))
-        ),
-        done: sortTasks(
-          (data.done || []).map((task) => ({
-            ...task,
-            id: task._id || task.id,
-            _id: task._id || task.id,
-          }))
-        ),
+        todo: sortTasks((data.todo || []).map(normalizeTask)),
+        doing: sortTasks((data.doing || []).map(normalizeTask)),
+        done: sortTasks((data.done || []).map(normalizeTask))
       };
 
       console.log("Processed and sorted data:", processedData);
@@ -77,6 +33,12 @@ export function useKanbanTasks() {
       setLoading(false);
     }
   };
+
+  const normalizeTask = (task) => ({
+    ...task,
+    id: task._id || task.id,
+    _id: task.id || task._id
+  });
 
   const addTask = async (text) => {
     if (!text.trim()) return;
